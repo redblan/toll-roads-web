@@ -230,10 +230,10 @@ window.onload = function() {
         let current = !selectedOperation ? a : b;
         if (current !== '') {
             memory += parseFloat(current);
-            console.log('M+memory =', memory);   // ← добавьте это
+            console.log('M+ memory =', memory);
         } else if (expressionResult !== '') {
             memory += parseFloat(expressionResult);
-            console.log('M+memory =', memory);   // ← и это
+            console.log('M+ memory =', memory);
         }
     };
 
@@ -241,28 +241,10 @@ window.onload = function() {
         let current = !selectedOperation ? a : b;
         if (current !== '') {
             memory -= parseFloat(current);
-            console.log('M-memory =', memory);   // ← добавьте это
+            console.log('M- memory =', memory);
         } else if (expressionResult !== '') {
             memory -= parseFloat(expressionResult);
-            console.log('M-memory =', memory);   // ← и это
-        }
-    };
-
-    document.getElementById("btn_custom").onclick = function() {
-        let current = !selectedOperation ? a : b;
-        if (current !== '') {
-            let num = parseFloat(current);
-            if (num === 0) {
-                alert('Деление на ноль');
-                return;
-            }
-            let result = (1 / num).toString();
-            if (!selectedOperation) {
-                a = result;
-            } else {
-                b = result;
-            }
-            updateDisplay(result);
+            console.log('M- memory =', memory);
         }
     };
 
@@ -275,5 +257,61 @@ window.onload = function() {
     document.getElementById("btn_toggle_display_color").onclick = function() {
         displayColorIndex = (displayColorIndex + 1) % displayColors.length;
         resultElement.style.backgroundColor = displayColors[displayColorIndex];
+    };
+
+    // ===== ИНДИВИДУАЛЬНАЯ ФУНКЦИЯ: расчёт стоимости проезда =====
+    const tollPanel = document.getElementById("toll_roads_panel");
+    const tollRateSelect = document.getElementById("toll_rate_select");
+    const tollCustomRow = document.getElementById("toll_custom_row");
+    const tollResultDiv = document.getElementById("toll_roads_result");
+
+    document.getElementById("btn_toll_roads").onclick = function() {
+        const isVisible = tollPanel.style.display === 'block';
+        tollPanel.style.display = isVisible ? 'none' : 'block';
+        if (!isVisible) {
+            const currentValue = !selectedOperation ? a : b;
+            if (currentValue !== '') {
+                document.getElementById("toll_km_input").value = parseFloat(currentValue);
+            }
+        }
+    };
+
+    tollRateSelect.onchange = function() {
+        tollCustomRow.style.display = (this.value === 'custom') ? 'flex' : 'none';
+    };
+
+    document.getElementById("btn_toll_roads_calc").onclick = function() {
+        const kmInput = document.getElementById("toll_km_input");
+        const km = parseFloat(kmInput.value);
+        if (isNaN(km) || km <= 0) {
+            tollResultDiv.innerHTML = '⚠️ Введите корректное расстояние';
+            tollResultDiv.className = 'toll-result toll-error';
+            return;
+        }
+
+        let rate, roadName;
+        if (tollRateSelect.value === 'custom') {
+            const customRate = parseFloat(document.getElementById("toll_custom_rate").value);
+            if (isNaN(customRate) || customRate <= 0) {
+                tollResultDiv.innerHTML = '⚠️ Введите корректный тариф';
+                tollResultDiv.className = 'toll-result toll-error';
+                return;
+            }
+            rate = customRate;
+            roadName = 'Пользовательский тариф';
+        } else {
+            rate = parseFloat(tollRateSelect.value);
+            roadName = tollRateSelect.options[tollRateSelect.selectedIndex].text.split('—')[0].trim();
+        }
+
+        const cost = km * rate;
+        tollResultDiv.innerHTML = `🛣 <strong>${roadName}</strong><br>📏 Расстояние: <strong>${km} км</strong><br>💰 Тариф: <strong>${rate} ₽/км</strong><br>✅ Стоимость проезда: <strong>${cost.toFixed(2)} ₽</strong>`;
+        tollResultDiv.className = 'toll-result toll-success';
+
+        // Переносим результат на дисплей калькулятора
+        a = cost.toFixed(2);
+        b = '';
+        selectedOperation = null;
+        updateDisplay(a);
     };
 };
