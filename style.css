@@ -1,284 +1,305 @@
-/* ========== RESET & БАЗОВЫЕ СТИЛИ ========== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-}
-
 body {
-    background: #f0f2f5;  /* светлый нейтральный фон */
-    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f5f5f5;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 30px 20px;
+    min-height: 100vh;
 }
 
 .calculator-container {
-    max-width: 580px;
+    max-width: 500px;
     width: 100%;
-    margin: 0 auto;
-}
-
-/* ========== КАЛЬКУЛЯТОР (ОСНОВНОЙ БЛОК) ========== */
-.calculator {
     background: #ffffff;
-    border-radius: 32px;
-    padding: 24px 20px 28px;
-    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(0,0,0,0.05);
-    border: 1px solid #e9ecef;
-    transition: all 0.2s;
+    border-radius: 30px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    padding: 25px;
+    border: 2px solid #FF8C00;
 }
 
-/* Экран (белый с чёрным текстом, лёгкая тень) */
+.calculator {
+    background: #fafafa;
+    border-radius: 25px;
+    padding: 20px;
+    border: 1px solid #FF8C00;
+}
+
 .result {
-    background: #f8f9fa;
-    color: #1e2a3a;
-    font-size: 3.2rem;
-    font-weight: 600;
-    text-align: right;
-    padding: 20px 24px;
-    margin-bottom: 28px;
-    border-radius: 28px;
+    width: calc(100% - 30px);
+    height: 80px;
+    background: #f0f0f0;
+    border-radius: 25px;
+    margin-bottom: 20px;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    color: #333333;
+    font-size: 2.5rem;
     font-family: 'Courier New', monospace;
-    letter-spacing: 1px;
-    word-wrap: break-word;
-    word-break: break-all;
-    min-height: 100px;
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.02), 0 1px 0 rgba(0,0,0,0.02);
-    border: 1px solid #e2e6ea;
+    font-weight: bold;
+    border: 2px solid #FF8C00;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
 }
 
-/* Сетка кнопок */
 .buttons {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-bottom: 28px;
+    gap: 10px;
 }
+
 .row {
-    display: flex;
-    gap: 12px;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
 }
+
 .btn {
-    flex: 1;
-    background: #ffffff;
-    border: 1px solid #dee2e6;
-    border-radius: 28px;
-    padding: 16px 0;
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #212529;
-    cursor: pointer;
-    transition: 0.1s linear;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-    text-align: center;
-}
-.btn:active {
-    transform: translateY(1px);
-    background: #f8f9fa;
-}
-/* Оранжевые кнопки операций */
-.btn.primary {
-    background: #FF6B00;
-    border-color: #FF6B00;
-    color: white;
-    box-shadow: 0 2px 6px rgba(255,107,0,0.2);
-}
-.btn.primary:active {
-    background: #e05e00;
-}
-/* Серые кнопки (C, +/-, %) */
-.btn.secondary {
-    background: #e9ecef;
-    border-color: #dee2e6;
-    color: #1e2a3a;
-}
-/* Функциональные кнопки (√, x², M+, M- и т.д.) */
-.btn.function {
-    background: #f8f9fa;
-    border-color: #dee2e6;
-    font-size: 1.2rem;
-    font-weight: 500;
-}
-.btn.execute {
-    background: #FF6B00;
-    border-color: #FF6B00;
-    color: white;
-    box-shadow: 0 2px 6px rgba(255,107,0,0.3);
-}
-/* Спецкнопка платных дорог (оранжевая рамка) */
-.btn.toll-roads-btn {
-    background: #ffffff;
-    border: 2px solid #FF6B00;
-    color: #FF6B00;
-    font-weight: 700;
-    box-shadow: none;
-}
-.btn.toll-roads-btn:active {
-    background: #FFF0E5;
-}
-
-/* ========== ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ (12 шт) ========== */
-.extra-functions {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 28px;
-    padding-top: 8px;
-    border-top: 1px solid #e9ecef;
-}
-
-/* ========== ПАНЕЛЬ РАСЧЁТА ПЛАТНОЙ ДОРОГИ ========== */
-.toll-roads-panel {
-    background: #ffffff;
-    border-radius: 28px;
-    padding: 20px;
-    margin-top: 12px;
-    border: 1px solid #FF6B00;
-    box-shadow: 0 6px 14px rgba(0,0,0,0.05);
-}
-.toll-roads-header {
-    font-size: 1.2rem;
-    font-weight: bold;
-    text-align: center;
-    color: #FF6B00;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #FF6B00;
-    display: inline-block;
     width: 100%;
-    padding-bottom: 8px;
+    aspect-ratio: 1 / 1;
+    border: none;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #333333;
+    font-size: 1.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 0 5px 0 #e0e0e0;
+    border: 1px solid #cccccc;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
+.btn:hover {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: 0 7px 0 #d0d0d0;
+}
+
+.btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 #d0d0d0;
+}
+
+.btn.secondary {
+    background: #FFE5B4;
+    color: #333;
+    border-color: #FF8C00;
+}
+.btn.secondary:hover {
+    background: #FFD89C;
+}
+
+.btn.primary {
+    background: #FF8C00;
+    color: white;
+    border: none;
+    box-shadow: 0 5px 0 #cc7000;
+}
+.btn.primary:hover {
+    background: #e67e00;
+    box-shadow: 0 7px 0 #b36200;
+}
+
+.btn.execute {
+    background: #FF8C00;
+    color: white;
+    border: none;
+    box-shadow: 0 5px 0 #cc7000;
+}
+.btn.execute:hover {
+    background: #e67e00;
+}
+
+.github-link {
+    text-decoration: none;
+    display: block;
+    margin: 20px 0 15px;
+}
+.github-btn {
+    background: #24292e;
+    color: white;
+    aspect-ratio: auto;
+    height: 60px;
+    font-size: 1.3rem;
+    border-radius: 40px;
+    box-shadow: 0 5px 0 #1a1a1a;
+    border: none;
+}
+.github-btn:hover {
+    background: #2c974b;
+}
+
+.author-details {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 12px 18px;
+    border: 2px solid #FF8C00;
+    color: #333;
+    margin-top: 15px;
+}
+.author-details summary {
+    font-weight: bold;
+    cursor: pointer;
+    color: #FF8C00;
+    font-size: 1.1rem;
+}
+.author-details p {
+    margin: 10px 0 0;
+    color: #555;
+}
+
+.lab-purpose {
+    text-align: center;
+    margin-top: 25px;
+    margin-bottom: 0;
+    font-size: 1rem;
+    color: #333;
+    background: #f9f9f9;
+    padding: 12px;
+    border-radius: 20px;
+    border: 1px solid #FF8C00;
+}
+.lab-purpose mark {
+    background: #FF8C00;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 12px;
+    font-weight: bold;
+}
+
+/* Дополнительные функции */
+.extra-functions {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px dashed #FF8C00;
+}
+
+.extra-functions .row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.extra-functions .btn.function {
+    aspect-ratio: auto;
+    height: 50px;
+    background: #e0e0e0;
+    color: #333;
+    font-size: 1.2rem;
+    box-shadow: 0 3px 0 #b0b0b0;
+}
+.extra-functions .btn.function:hover {
+    background: #d0d0d0;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 0 #a0a0a0;
+}
+
+/* Кнопка индивидуальной функции toll_roads — выделяем оранжевым */
+.extra-functions .btn.toll-roads-btn {
+    background: #fff3e0;
+    color: #FF8C00;
+    border: 2px solid #FF8C00;
+    font-size: 1rem;
+    font-weight: bold;
+    box-shadow: 0 3px 0 #cc7000;
+}
+.extra-functions .btn.toll-roads-btn:hover {
+    background: #ffe0b2;
+    box-shadow: 0 5px 0 #b36200;
+}
+
+/* ─── Панель расчёта платных дорог (toll_roads) ─── */
+.toll-roads-panel {
+    display: none;
+    margin-top: 18px;
+    background: #fff8f0;
+    border: 2px solid #FF8C00;
+    border-radius: 20px;
+    padding: 18px;
+    animation: slideDown 0.25s ease;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.toll-roads-header {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #FF8C00;
+    margin-bottom: 14px;
+    text-align: center;
+    letter-spacing: 0.02em;
+}
+
 .toll-roads-row {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
 }
+
 .toll-roads-row label {
-    width: 130px;
+    min-width: 140px;
+    font-size: 0.95rem;
+    color: #555;
     font-weight: 600;
-    color: #1e2a3a;
 }
-.toll-input, .toll-select {
+
+.toll-input,
+.toll-select {
     flex: 1;
-    background: #f8f9fa;
-    border: 1px solid #ced4da;
-    border-radius: 28px;
-    padding: 12px 16px;
-    color: #1e2a3a;
+    padding: 8px 12px;
+    border: 2px solid #FF8C00;
+    border-radius: 10px;
     font-size: 1rem;
+    background: #ffffff;
+    color: #333;
     outline: none;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    transition: border-color 0.2s;
 }
-.toll-input:focus, .toll-select:focus {
-    border-color: #FF6B00;
-    box-shadow: 0 0 0 2px rgba(255,107,0,0.2);
+.toll-input:focus,
+.toll-select:focus {
+    border-color: #cc7000;
+    box-shadow: 0 0 0 3px rgba(255,140,0,0.15);
 }
+
 .toll-calc-btn {
     width: 100%;
-    background: #FF6B00;
-    color: white;
-    font-weight: bold;
-    margin-top: 8px;
-    font-size: 1.2rem;
-    border: none;
+    aspect-ratio: auto;
+    height: 48px;
+    font-size: 1.1rem;
+    border-radius: 14px;
+    margin-top: 6px;
+    letter-spacing: 0.01em;
 }
+
 .toll-result {
-    margin-top: 18px;
-    font-size: 1.3rem;
-    font-weight: bold;
-    text-align: center;
-    background: #f8f9fa;
-    padding: 14px;
-    border-radius: 28px;
-    color: #1e2a3a;
-    word-break: break-word;
-    border: 1px solid #e9ecef;
-}
-
-/* ========== БЛОК GITHUB + АВТОР ========== */
-.extra-elements {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 24px;
-    gap: 16px;
-    flex-wrap: wrap;
-}
-.github-link {
-    text-decoration: none;
-}
-.github-btn {
-    background: #212529;
-    padding: 10px 20px;
+    margin-top: 14px;
+    padding: 12px 16px;
+    border-radius: 14px;
     font-size: 1rem;
-    border-radius: 60px;
-    color: white;
-    border: none;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-.github-btn:active {
-    background: #000;
-}
-.author-details {
-    background: #f8f9fa;
-    border-radius: 28px;
-    padding: 8px 20px;
-    color: #1e2a3a;
-    font-size: 0.9rem;
-    border: 1px solid #dee2e6;
-}
-.author-details summary {
-    cursor: pointer;
-    font-weight: bold;
-    color: #FF6B00;
-}
-.author-details p {
-    margin-top: 8px;
-    line-height: 1.4;
+    line-height: 1.7;
+    min-height: 20px;
 }
 
-/* Цель лабораторной работы */
-.lab-purpose {
-    margin-top: 28px;
-    background: #ffffff;
-    padding: 18px 20px;
-    border-radius: 28px;
-    font-size: 0.85rem;
-    line-height: 1.5;
-    color: #2c3e50;
-    border-left: 5px solid #FF6B00;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-}
-.lab-purpose mark {
-    background: #FF6B0020;
-    color: #e05e00;
-    padding: 2px 6px;
-    border-radius: 20px;
-    font-weight: 500;
+.toll-result.toll-success {
+    background: #e8f5e9;
+    border: 2px solid #43a047;
+    color: #2e7d32;
 }
 
-/* ========== АДАПТИВНОСТЬ ========== */
-@media (max-width: 500px) {
-    .calculator {
-        padding: 16px;
-    }
-    .btn {
-        padding: 12px 0;
-        font-size: 1.2rem;
-    }
-    .result {
-        font-size: 2.2rem;
-        padding: 14px 18px;
-    }
-    .toll-roads-row label {
-        width: 100%;
-    }
-    .extra-elements {
-        flex-direction: column;
-        align-items: stretch;
-    }
+.toll-result.toll-error {
+    background: #fff3e0;
+    border: 2px solid #FF8C00;
+    color: #e65100;
 }
