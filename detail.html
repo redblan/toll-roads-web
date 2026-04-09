@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Автодор – детальный просмотр</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/examples/jsm/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 10;
+            background: rgba(30,30,47,0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            pointer-events: auto;
+            border: 1px solid #FF8C00;
+        }
+        button {
+            background: #FF8C00;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: inherit;
+            color: #1e1e2f;
+        }
+        button:hover { background: #ffaa33; }
+        #back-btn {
+            background: #444;
+            color: white;
+        }
+        #back-btn:hover { background: #666; }
+        .info-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.6);
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: #FF8C00;
+            font-size: 14px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 10;
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <button id="back-btn">← Назад</button>
+        <button id="view-front">Спереди</button>
+        <button id="view-back">Сзади</button>
+        <button id="view-left">Слева</button>
+        <button id="view-right">Справа</button>
+        <button id="zoom-in">+ Приблизить</button>
+        <button id="zoom-out">- Отдалить</button>
+    </div>
+    <div class="info-panel" id="model-name">Загрузка модели...</div>
+    <script src="detail.js" type="module"></script>
+</body>
+</html>

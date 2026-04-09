@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Автодор – 3D инфраструктура платных дорог</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/examples/jsm/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <h1>🛣 Автодор</h1>
+            <span class="subtitle">3D инфраструктура платных дорог</span>
+        </div>
+        <div class="upload-area">
+            <input type="file" id="upload-model" accept=".glb" hidden>
+            <button id="upload-btn" class="btn">+ Загрузить свою модель (.glb)</button>
+        </div>
+    </header>
+    <main>
+        <div class="gallery-grid" id="gallery-grid"></div>
+    </main>
+    <footer class="footer">
+        <p>© Баринов Егор, ИУ5-41Б — 3D галерея объектов дорожной инфраструктуры</p>
+    </footer>
+    <script src="idb.js" type="module"></script>
+    <script src="app.js" type="module"></script>
+</body>
+</html>
