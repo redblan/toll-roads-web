@@ -25,6 +25,27 @@
             <button id="upload-btn" class="btn">+ Загрузить свою модель (.glb)</button>
         </div>
     </header>
+
+    <!-- Панель фильтрации и поиска -->
+    <div class="filter-bar">
+        <div class="filter-group">
+            <label>🔍 Поиск:</label>
+            <input type="text" id="search-input" placeholder="Название модели..." class="search-input">
+        </div>
+        <div class="filter-group">
+            <label>📂 Категория:</label>
+            <select id="category-select" class="category-select">
+                <option value="all">Все категории</option>
+                <option value="Транспорт">🚗 Транспорт</option>
+                <option value="Инфраструктура">🛣 Инфраструктура</option>
+                <option value="Оборудование">🚦 Оборудование</option>
+                <option value="Сооружение">🌉 Сооружение</option>
+                <option value="Пользовательская">👤 Пользовательские</option>
+            </select>
+        </div>
+        <button id="reset-filters" class="btn reset-btn">Сбросить фильтры</button>
+    </div>
+
     <main>
         <div class="gallery-grid" id="gallery-grid"></div>
     </main>

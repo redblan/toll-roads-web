@@ -3,13 +3,14 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { initDB, saveModel, getAllModels } from './idb.js';
 
 const PRESET_MODELS = [
-    { name: 'Легковой автомобиль', url: './models/car.glb', id: 'preset-car', category: 'Транспорт' },
-    { name: 'Пункт оплаты', url: './models/toll-booth.glb', id: 'preset-toll', category: 'Инфраструктура' },
-    { name: 'Дорожный знак', url: './models/road-sign.glb', id: 'preset-sign', category: 'Оборудование' },
-    { name: 'Мост', url: './models/bridge.glb', id: 'preset-bridge', category: 'Сооружение' }
+    { name: 'Легковой автомобиль', url: './models/car.glb', id: 'preset-car', category: 'Транспорт', isPreset: true },
+    { name: 'Пункт оплаты', url: './models/toll-booth.glb', id: 'preset-toll', category: 'Инфраструктура', isPreset: true },
+    { name: 'Дорожный знак', url: './models/road-sign.glb', id: 'preset-sign', category: 'Оборудование', isPreset: true },
+    { name: 'Мост', url: './models/bridge.glb', id: 'preset-bridge', category: 'Сооружение', isPreset: true }
 ];
 
-let currentModels = [];
+let allModels = [];
+let filteredModels = [];
 
 function generatePreviewFromUrl(url) {
     return new Promise((resolve) => {
@@ -22,8 +23,8 @@ function generatePreviewFromUrl(url) {
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x2a2a3a);
         const camera = new THREE.PerspectiveCamera(45, canvas.width / canvas.height, 0.1, 1000);
-        
-        // Освещение
+        camera.position.set(2, 1, 3);
+        camera.lookAt(0, 0, 0);
         const ambientLight = new THREE.AmbientLight(0x404060);
         scene.add(ambientLight);
         const dirLight = new THREE.DirectionalLight(0xffffff, 1);
@@ -36,20 +37,10 @@ function generatePreviewFromUrl(url) {
         const loader = new GLTFLoader();
         loader.load(url, (gltf) => {
             const model = gltf.scene;
-            // Центрируем и ставим на пол
             const box = new THREE.Box3().setFromObject(model);
-            const size = box.getSize(new THREE.Vector3());
-            const center = box.getCenter(new THREE.Vector3());
             const bottomY = box.min.y;
-            model.position.x = -center.x;
-            model.position.z = -center.z;
             model.position.y = -bottomY;
             scene.add(model);
-            
-            // Настраиваем камеру под размер модели
-            const distance = Math.max(size.x, size.y, size.z) * 1.2;
-            camera.position.set(distance * 0.8, distance * 0.6, distance);
-            camera.lookAt(0, size.y / 2, 0);
             renderer.render(scene, camera);
             const dataURL = canvas.toDataURL();
             resolve(dataURL);
@@ -70,12 +61,8 @@ async function generatePreviewFromBlob(blob) {
 async function loadPresetModels() {
     for (const preset of PRESET_MODELS) {
         const preview = await generatePreviewFromUrl(preset.url);
-        currentModels.push({
-            id: preset.id,
-            name: preset.name,
-            url: preset.url,
-            category: preset.category,
-            isPreset: true,
+        allModels.push({
+            ...preset,
             preview: preview
         });
     }
@@ -84,7 +71,7 @@ async function loadPresetModels() {
 async function loadUserModels() {
     const userModels = await getAllModels();
     for (const model of userModels) {
-        currentModels.push({
+        allModels.push({
             id: model.id,
             name: model.name,
             blob: model.file,
@@ -99,7 +86,7 @@ function renderGallery() {
     const grid = document.getElementById('gallery-grid');
     if (!grid) return;
     grid.innerHTML = '';
-    for (const model of currentModels) {
+    for (const model of filteredModels) {
         const card = document.createElement('div');
         card.className = 'card';
         card.addEventListener('click', () => {
@@ -137,11 +124,29 @@ function renderGallery() {
         info.className = 'card-info';
         info.innerHTML = `
             <div class="card-title">${model.name}</div>
-            <div class="card-category">${model.category || (model.isPreset ? 'Предустановленная' : 'Загруженная')}</div>
+            <div class="card-category">${model.category}</div>
         `;
         card.appendChild(info);
         grid.appendChild(card);
     }
+}
+
+function applyFilters() {
+    const searchText = document.getElementById('search-input').value.toLowerCase();
+    const category = document.getElementById('category-select').value;
+    
+    filteredModels = allModels.filter(model => {
+        const matchesSearch = model.name.toLowerCase().includes(searchText);
+        const matchesCategory = (category === 'all') || (model.category === category);
+        return matchesSearch && matchesCategory;
+    });
+    renderGallery();
+}
+
+function resetFilters() {
+    document.getElementById('search-input').value = '';
+    document.getElementById('category-select').value = 'all';
+    applyFilters();
 }
 
 async function onFileUpload(file) {
@@ -152,15 +157,16 @@ async function onFileUpload(file) {
     const preview = await generatePreviewFromBlob(file);
     if (preview) {
         const id = await saveModel(file, preview, file.name.replace('.glb', ''));
-        currentModels.push({
+        const newModel = {
             id: id,
             name: file.name.replace('.glb', ''),
             blob: file,
             preview: preview,
             isPreset: false,
             category: 'Пользовательская'
-        });
-        renderGallery();
+        };
+        allModels.push(newModel);
+        applyFilters();
     } else {
         alert('Не удалось создать превью для этой модели');
     }
@@ -170,7 +176,12 @@ async function init() {
     await initDB();
     await loadPresetModels();
     await loadUserModels();
-    renderGallery();
+    
+    applyFilters();
+    
+    document.getElementById('search-input').addEventListener('input', applyFilters);
+    document.getElementById('category-select').addEventListener('change', applyFilters);
+    document.getElementById('reset-filters').addEventListener('click', resetFilters);
     
     const uploadBtn = document.getElementById('upload-btn');
     const fileInput = document.getElementById('upload-model');

@@ -19,16 +19,16 @@ if (type === 'preset') {
 
 document.getElementById('model-name').innerText = modelName;
 
-// Сцена
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0f0f1a);
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(2, 1.5, 3);
+camera.lookAt(0, 0, 0);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 document.body.appendChild(renderer.domElement);
 
-// Освещение
 const ambientLight = new THREE.AmbientLight(0x404060);
 scene.add(ambientLight);
 const mainLight = new THREE.DirectionalLight(0xffaa66, 1);
@@ -45,45 +45,32 @@ const bottomLight = new THREE.PointLight(0x6699ff, 0.2);
 bottomLight.position.set(0, -1, 0);
 scene.add(bottomLight);
 
-// Пол-сетка (для визуального ориентира)
 const gridHelper = new THREE.GridHelper(5, 20, 0x88aaff, 0x335588);
 gridHelper.position.y = -0.01;
 scene.add(gridHelper);
 
-// Орбит контрол
-let controls = null;
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.05;
+controls.autoRotate = false;
+controls.enableZoom = true;
+controls.zoomSpeed = 1.2;
+controls.target.set(0, 0.5, 0);
+
 let currentModel = null;
 
 function centerAndAddModel(model) {
-    // Вычисляем bounding box модели
     const box = new THREE.Box3().setFromObject(model);
     const size = box.getSize(new THREE.Vector3());
     const center = box.getCenter(new THREE.Vector3());
     const bottomY = box.min.y;
-
-    // Смещаем модель: X и Z центрируем, Y ставим на пол
     model.position.x = -center.x;
     model.position.z = -center.z;
     model.position.y = -bottomY;
-
     scene.add(model);
-
-    // Настраиваем controls и камеру
     const modelCenter = new THREE.Vector3(0, size.y / 2, 0);
-    if (controls) {
-        controls.target.copy(modelCenter);
-        controls.update();
-    } else {
-        controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.autoRotate = false;
-        controls.enableZoom = true;
-        controls.zoomSpeed = 1.2;
-        controls.target.copy(modelCenter);
-    }
-    
-    // Подбираем расстояние камеры в зависимости от размера модели
+    controls.target.copy(modelCenter);
+    controls.update();
     const distance = Math.max(size.x, size.y, size.z) * 1.5;
     camera.position.set(distance * 0.8, distance * 0.6, distance);
     controls.update();
@@ -131,12 +118,11 @@ if (type === 'preset' && modelUrl) {
 
 function animate() {
     requestAnimationFrame(animate);
-    if (controls) controls.update();
+    controls.update();
     renderer.render(scene, camera);
 }
 animate();
 
-// Обработчики кнопок
 document.getElementById('back-btn')?.addEventListener('click', () => {
     window.location.href = 'index.html';
 });
