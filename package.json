@@ -1,0 +1,16 @@
+{
+  "name": "lr4-toll-roads",
+  "version": "1.0.0",
+  "description": "ЛР 4 — Express.js API. Тема: Платные дороги (Автодор). Баринов Егор, ИУ5-41Б",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
