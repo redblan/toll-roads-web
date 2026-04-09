@@ -9,8 +9,10 @@
 <body>
     <div class="calculator-container">
         <div class="calculator">
+            <!-- Экран калькулятора -->
             <div id="result" class="result">0</div>
 
+            <!-- Основные кнопки (цифры и операции) -->
             <div class="buttons">
                 <div class="row">
                     <button id="btn_op_clear" class="btn secondary">C</button>
@@ -42,8 +44,55 @@
                     <button id="btn_op_equal" class="btn primary execute">=</button>
                 </div>
             </div>
+
+            <!-- Дополнительные функции (12 пунктов из задания) -->
+            <div class="extra-functions">
+                <div class="row">
+                    <button id="btn_backspace" class="btn function">⌫</button>
+                    <button id="btn_sqrt" class="btn function">√</button>
+                    <button id="btn_square" class="btn function">x²</button>
+                    <button id="btn_factorial" class="btn function">x!</button>
+                </div>
+                <div class="row">
+                    <button id="btn_triple_zero" class="btn function">000</button>
+                    <button id="btn_memory_add" class="btn function">M+</button>
+                    <button id="btn_memory_sub" class="btn function">M-</button>
+                    <!-- 12. Индивидуальная функция: расчёт стоимости проезда по платной дороге (км × тариф) -->
+                    <button id="btn_toll_roads" class="btn function toll-roads-btn" title="Стоимость проезда: км × тариф М11 (4.5 ₽/км)">🛣 ₽/км</button>
+                </div>
+                <div class="row">
+                    <button id="btn_toggle_bg" class="btn function">Сменить фон</button>
+                    <button id="btn_toggle_display_color" class="btn function">Цвет экрана</button>
+                </div>
+            </div>
+
+            <!-- Блок индивидуальной функции toll_roads -->
+            <div class="toll-roads-panel" id="toll_roads_panel">
+                <div class="toll-roads-header">🛣 Расчёт стоимости проезда (Автодор)</div>
+                <div class="toll-roads-row">
+                    <label>Расстояние (км):</label>
+                    <input type="number" id="toll_km_input" class="toll-input" placeholder="Введите км" min="0" step="0.1">
+                </div>
+                <div class="toll-roads-row">
+                    <label>Тариф (₽/км):</label>
+                    <select id="toll_rate_select" class="toll-select">
+                        <option value="4.5">М11 «Нева» — 4.50 ₽/км</option>
+                        <option value="5.2">М4 «Дон» — 5.20 ₽/км</option>
+                        <option value="3.8">М3 «Украина» — 3.80 ₽/км</option>
+                        <option value="6.1">ЦКАД — 6.10 ₽/км</option>
+                        <option value="custom">Свой тариф...</option>
+                    </select>
+                </div>
+                <div class="toll-roads-row" id="toll_custom_row" style="display:none;">
+                    <label>Свой тариф (₽/км):</label>
+                    <input type="number" id="toll_custom_rate" class="toll-input" placeholder="Введите тариф" min="0" step="0.01">
+                </div>
+                <button id="btn_toll_roads_calc" class="btn primary toll-calc-btn">Рассчитать стоимость</button>
+                <div id="toll_roads_result" class="toll-result"></div>
+            </div>
         </div>
 
+        <!-- Дополнительные элементы (GitHub, автор, цель) -->
         <div class="extra-elements">
             <a href="https://github.com/redblan/web-labs.git" target="_blank" class="github-link">
                 <button class="btn github-btn">Мой GitHub</button>
@@ -58,9 +107,12 @@
             </details>
         </div>
 
+        <!-- Цель лабораторной работы (полный текст) -->
         <p class="lab-purpose">
             <strong>Цель данной лабораторной работы</strong> — знакомство с инструментами построения пользовательских интерфейсов web-сайтов: <mark>HTML</mark>, <mark>CSS</mark>. В ходе выполнения работы вам предстоит ознакомиться с кодом реализации простого калькулятора и выполнить задания по варианту.
         </p>
     </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
