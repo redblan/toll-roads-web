@@ -1,50 +1,118 @@
-/* Стилизация в духе Автодора — оранжево-тёмная тема */
-
 body {
-    background: #f4f4f4;
+    margin: 0;
+    padding: 0;
     font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f4f4f4;
 }
 
+/* ── Навбар ── */
 .autodor-navbar {
     background: #1a1a2e;
     border-bottom: 3px solid #FF8C00;
+    padding: 10px 0;
 }
 
 .autodor-brand {
-    color: #FF8C00 !important;
+    color: #FF8C00;
     font-weight: 700;
     font-size: 1.4rem;
     letter-spacing: 0.03em;
+}
+
+.btn-home {
+    background: #FF8C00;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 18px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+.btn-home:hover {
+    background: #e67e00;
+    color: white;
 }
 
 /* ── Главная страница ── */
 .main-hero {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
     color: white;
-    padding: 60px 0 40px;
-    margin-bottom: 40px;
+    padding: 50px 0 35px;
+    margin-bottom: 35px;
     border-bottom: 4px solid #FF8C00;
 }
 
 .main-hero h1 {
-    font-size: 2.4rem;
+    font-size: 2.2rem;
     font-weight: 700;
 }
 
 .main-hero p {
     color: rgba(255,255,255,0.7);
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     max-width: 600px;
 }
 
 .section-title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 700;
     color: #1a1a2e;
-    margin-bottom: 24px;
-    padding-bottom: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
     border-bottom: 3px solid #FF8C00;
     display: inline-block;
+}
+
+/* ── ДЗ блок ── */
+.dz-block {
+    background: #fff8f0;
+    border: 2px solid #FF8C00;
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+}
+
+.dz-title {
+    font-weight: 700;
+    color: #FF8C00;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.dz-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.dz-label {
+    font-weight: 600;
+    min-width: 240px;
+}
+
+.dz-value {
+    color: #1a1a2e;
+}
+
+/* ── Кнопка добавить маршрут ── */
+.btn-add-route {
+    background: #FF8C00;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+.btn-add-route:hover {
+    background: #e67e00;
+    color: white;
 }
 
 /* ── Карточки маршрутов ── */
@@ -71,67 +139,87 @@ body {
 }
 
 .route-card-body {
-    padding: 20px;
+    padding: 18px;
 }
 
 .route-card-title {
     font-size: 1.1rem;
     font-weight: 700;
     color: #1a1a2e;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
 .route-card-subtitle {
     color: #888;
     font-size: 0.85rem;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .route-card-badge {
     display: inline-block;
     background: #FF8C00;
     color: white;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    padding: 3px 10px;
+    padding: 2px 10px;
     border-radius: 20px;
     margin-bottom: 8px;
 }
 
 .route-card-info {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     color: #555;
-    line-height: 1.5;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.route-card-actions {
+    display: flex;
+    gap: 8px;
 }
 
 .btn-route {
     background: #FF8C00;
     color: white;
     border: none;
-    border-radius: 10px;
-    padding: 8px 20px;
+    border-radius: 20px;
+    padding: 7px 16px;
     font-weight: 600;
-    width: 100%;
-    margin-top: 14px;
+    font-size: 0.88rem;
+    flex: 1;
     transition: background 0.2s;
 }
-
 .btn-route:hover {
     background: #e67e00;
     color: white;
+}
+
+.btn-delete {
+    background: #f5f5f5;
+    color: #c0392b;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    padding: 7px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+.btn-delete:hover {
+    background: #fdecea;
+    border-color: #c0392b;
 }
 
 /* ── Страница маршрута ── */
 .product-hero {
     background: linear-gradient(135deg, #1a1a2e, #0f3460);
     color: white;
-    padding: 50px 0 40px;
-    margin-bottom: 40px;
+    padding: 45px 0 35px;
+    margin-bottom: 35px;
     border-bottom: 4px solid #FF8C00;
 }
 
 .product-hero h1 {
-    font-size: 2rem;
+    font-size: 1.9rem;
     font-weight: 700;
 }
 
@@ -145,19 +233,19 @@ body {
 
 .product-detail-img {
     width: 100%;
-    height: 300px;
+    height: 280px;
     object-fit: cover;
 }
 
 .product-detail-body {
-    padding: 30px;
+    padding: 28px;
 }
 
 .product-detail-title {
-    font-size: 1.8rem;
+    font-size: 1.7rem;
     font-weight: 700;
     color: #1a1a2e;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .product-detail-text {
@@ -169,59 +257,54 @@ body {
 
 .stats-row {
     display: flex;
-    gap: 20px;
+    gap: 16px;
     flex-wrap: wrap;
-    margin-bottom: 24px;
+    margin-bottom: 22px;
 }
 
 .stat-block {
     background: #fff8f0;
     border: 2px solid #FF8C00;
     border-radius: 14px;
-    padding: 14px 24px;
+    padding: 12px 20px;
     text-align: center;
     flex: 1;
-    min-width: 120px;
+    min-width: 110px;
 }
 
 .stat-value {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 700;
     color: #FF8C00;
 }
 
 .stat-label {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: #888;
     margin-top: 2px;
 }
 
-/* Аккордеон — секции маршрута */
+/* Аккордеон */
 .accordion-button:not(.collapsed) {
     background: #fff3e0;
     color: #FF8C00;
     font-weight: 600;
 }
-
 .accordion-button:focus {
     box-shadow: 0 0 0 3px rgba(255,140,0,0.25);
 }
 
-.accordion-button::after {
-    filter: sepia(1) saturate(10) hue-rotate(10deg);
-}
-
+/* Кнопка назад */
 .btn-back {
     background: #1a1a2e;
     color: white;
     border: none;
-    border-radius: 10px;
-    padding: 10px 28px;
+    border-radius: 20px;
+    padding: 9px 24px;
     font-weight: 600;
-    margin-bottom: 30px;
+    margin-bottom: 24px;
     transition: background 0.2s;
 }
-
 .btn-back:hover {
     background: #FF8C00;
     color: white;
@@ -230,8 +313,8 @@ body {
 .footer-note {
     text-align: center;
     color: #aaa;
-    font-size: 0.85rem;
-    padding: 30px 0;
+    font-size: 0.82rem;
+    padding: 28px 0;
     border-top: 1px solid #eee;
-    margin-top: 40px;
+    margin-top: 35px;
 }

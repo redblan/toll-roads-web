@@ -22,19 +22,35 @@ export class RouteCardComponent {
                             💰 Тариф: <strong>${data.rate}</strong><br>
                             🚗 Скорость: <strong>${data.speed}</strong>
                         </div>
-                        <button class="btn btn-route">Подробнее →</button>
+                        <div class="route-card-actions">
+                            <button class="btn btn-route btn-details">Подробнее →</button>
+                            <button class="btn btn-delete">🗑 Удалить</button>
+                        </div>
                     </div>
                 </div>
             </div>
         `;
     }
 
-    render(data, onClick) {
+    render(data, onClick, onDelete) {
         this.parent.insertAdjacentHTML('beforeend', this.getHTML(data));
 
-        // Находим только что вставленную карточку и вешаем обработчик
         const cards = this.parent.querySelectorAll('.route-card');
         const lastCard = cards[cards.length - 1];
+
+        // Клик по "Подробнее"
+        lastCard.querySelector('.btn-details').addEventListener('click', (e) => {
+            e.stopPropagation();
+            onClick();
+        });
+
+        // Клик по всей карточке (кроме кнопок)
         lastCard.addEventListener('click', onClick);
+
+        // Клик по "Удалить"
+        lastCard.querySelector('.btn-delete').addEventListener('click', (e) => {
+            e.stopPropagation();
+            onDelete();
+        });
     }
 }
