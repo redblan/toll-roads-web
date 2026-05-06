@@ -16,6 +16,9 @@ app.use(cors());
 // Middleware: парсинг JSON
 app.use(express.json());
 
+// Раздача статики (bundle ЛР 6)
+app.use(express.static(path.join(__dirname, '../dist')));
+
 // Middleware: логирование запросов
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
