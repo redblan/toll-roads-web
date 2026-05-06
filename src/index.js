@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const routesRouter = require('./routes/routes');
 const routesService = require('./services/routesService');
@@ -8,6 +9,9 @@ const PORT = 3000;
 
 const DATA_FILE_PATH = path.join(__dirname, 'data/routes.json');
 routesService.init(DATA_FILE_PATH);
+
+// Middleware: CORS
+app.use(cors());
 
 // Middleware: парсинг JSON
 app.use(express.json());
