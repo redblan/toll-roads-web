@@ -2,7 +2,6 @@
   "name": "web-labs",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,5 +19,8 @@
   "homepage": "https://github.com/redblan/web-labs#readme",
   "dependencies": {
     "bootstrap": "^5.3.8"
+  },
+  "devDependencies": {
+    "parcel": "^2.16.4"
   }
 }
