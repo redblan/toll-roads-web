@@ -1,7 +1,7 @@
 import { ProductComponent } from '../../components/product/index.js';
 import { BackButtonComponent } from '../../components/back-button/index.js';
 import { MainPage } from '../main/index.js';
-import { xhr_get_toll_road } from '../../api.js';
+import { fetch_get_toll_road } from '../../api.js';
 
 export class ProductPage {
     constructor(parent, toll_road_id) {
@@ -28,7 +28,7 @@ export class ProductPage {
         `;
     }
 
-    render() {
+    async render() {
         this.parent.innerHTML = '';
         this.parent.insertAdjacentHTML('beforeend', this.getHTML());
 
@@ -41,15 +41,16 @@ export class ProductPage {
         const backButton = new BackButtonComponent(content);
         backButton.render(() => new MainPage(this.parent).render());
 
-        xhr_get_toll_road(this.toll_road_id, (toll_road) => {
+        try {
+            const toll_road = await fetch_get_toll_road(this.toll_road_id);
             document.getElementById('product-title').textContent = `🛣 ${toll_road.title}`;
             const product = new ProductComponent(content);
             product.render(toll_road);
             content.insertAdjacentHTML('beforeend',
-                `<p class="footer-note">© Баринов Егор Сергеевич, ИУ5-41Б — Лабораторная работа 5</p>`
+                `<p class="footer-note">© Баринов Егор Сергеевич, ИУ5-41Б — Лабораторная работа 6</p>`
             );
-        }, (err) => {
-            content.innerHTML = `<p class="text-danger mt-3">Ошибка загрузки: ${err}</p>`;
-        });
+        } catch (err) {
+            content.innerHTML = `<p class="text-danger mt-3">Ошибка загрузки: ${err.message}</p>`;
+        }
     }
 }

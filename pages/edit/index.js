@@ -1,10 +1,10 @@
 import { MainPage } from '../main/index.js';
-import { xhr_get_toll_road } from '../../api.js';
+import { fetch_get_toll_road, fetch_create_toll_road, fetch_update_toll_road } from '../../api.js';
 
 export class EditPage {
     constructor(parent, toll_road_id) {
         this.parent = parent;
-        this.toll_road_id = toll_road_id; // null = новая трасса
+        this.toll_road_id = toll_road_id;
     }
 
     getHTML(toll_road = {}) {
@@ -28,10 +28,6 @@ export class EditPage {
                     <button class="btn btn-back" id="btn-back">← Назад</button>
 
                     <div class="edit-card">
-                        <div class="edit-note">
-                            💡 В этой версии поля доступны для просмотра и ввода, но кнопка «Сохранить» появится в Лабораторной работе 6.
-                        </div>
-
                         <div class="edit-form">
                             <div class="edit-field">
                                 <label>Название трассы</label>
@@ -76,46 +72,82 @@ export class EditPage {
                             </div>
                         </div>
 
-                        <button class="btn btn-save-disabled" disabled>
-                            💾 Сохранить (доступно в ЛР 6)
+                        <div id="edit-error" class="toll-error-msg" style="display:none"></div>
+
+                        <button class="btn btn-save" id="btn-save">
+                            💾 Сохранить
                         </button>
                     </div>
 
-                    <p class="footer-note">© Баринов Егор Сергеевич, ИУ5-41Б — Лабораторная работа 5</p>
+                    <p class="footer-note">© Баринов Егор Сергеевич, ИУ5-41Б — Лабораторная работа 6</p>
                 </div>
             </div>
         `;
     }
 
-    render() {
-        this.parent.innerHTML = '';
+    _getFormData() {
+        return {
+            title: document.getElementById('field_toll_road_title').value,
+            subtitle: document.getElementById('field_toll_road_subtitle').value,
+            distance_km: parseFloat(document.getElementById('field_toll_road_distance').value),
+            rate_per_km: parseFloat(document.getElementById('field_toll_road_rate').value),
+            speed_limit: document.getElementById('field_toll_road_speed').value,
+            opened_year: parseInt(document.getElementById('field_toll_road_year').value),
+            text: document.getElementById('field_toll_road_text').value
+        };
+    }
 
-        if (this.toll_road_id) {
-            // Редактирование — загружаем данные через XHR
-            this.parent.insertAdjacentHTML('beforeend', this.getHTML());
-            document.getElementById('product-title-placeholder')?.remove();
+    async save() {
+        const errorDiv = document.getElementById('edit-error');
+        const saveBtn = document.getElementById('btn-save');
+        const toll_road_data = this._getFormData();
 
-            xhr_get_toll_road(this.toll_road_id, (toll_road) => {
-                this.parent.innerHTML = '';
-                this.parent.insertAdjacentHTML('beforeend', this.getHTML(toll_road));
-                this._bindButtons();
-            }, () => {
-                this.parent.insertAdjacentHTML('beforeend', this.getHTML());
-                this._bindButtons();
-            });
-        } else {
-            // Новая трасса
-            this.parent.insertAdjacentHTML('beforeend', this.getHTML());
-            this._bindButtons();
+        if (!toll_road_data.title || !toll_road_data.distance_km || !toll_road_data.rate_per_km) {
+            errorDiv.textContent = '⚠️ Заполните обязательные поля: название, протяжённость, тариф';
+            errorDiv.style.display = 'block';
+            return;
+        }
+
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Сохранение...';
+
+        try {
+            if (this.toll_road_id) {
+                await fetch_update_toll_road(this.toll_road_id, toll_road_data);
+            } else {
+                await fetch_create_toll_road(toll_road_data);
+            }
+            new MainPage(this.parent).render();
+        } catch (err) {
+            errorDiv.textContent = '⚠️ Ошибка сохранения: ' + err.message;
+            errorDiv.style.display = 'block';
+            saveBtn.disabled = false;
+            saveBtn.textContent = '💾 Сохранить';
         }
     }
 
-    _bindButtons() {
-        document.getElementById('btn-home')?.addEventListener('click', () => {
+    async render() {
+        this.parent.innerHTML = '';
+
+        if (this.toll_road_id) {
+            try {
+                const toll_road = await fetch_get_toll_road(this.toll_road_id);
+                this.parent.insertAdjacentHTML('beforeend', this.getHTML(toll_road));
+            } catch {
+                this.parent.insertAdjacentHTML('beforeend', this.getHTML());
+            }
+        } else {
+            this.parent.insertAdjacentHTML('beforeend', this.getHTML());
+        }
+
+        document.getElementById('btn-home').addEventListener('click', () => {
             new MainPage(this.parent).render();
         });
-        document.getElementById('btn-back')?.addEventListener('click', () => {
+        document.getElementById('btn-back').addEventListener('click', () => {
             new MainPage(this.parent).render();
+        });
+        document.getElementById('btn-save').addEventListener('click', () => {
+            this.save();
         });
     }
 }
