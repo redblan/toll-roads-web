@@ -1,32 +1,26 @@
 import { ProductComponent } from '../../components/product/index.js';
 import { BackButtonComponent } from '../../components/back-button/index.js';
 import { MainPage } from '../main/index.js';
+import { xhr_get_toll_road } from '../../api.js';
 
 export class ProductPage {
-    constructor(parent, data) {
+    constructor(parent, toll_road_id) {
         this.parent = parent;
-        this.data = data;
-    }
-
-    get pageRoot() {
-        return document.getElementById('product-page');
+        this.toll_road_id = toll_road_id;
     }
 
     getHTML() {
         return `
             <div id="product-page">
-                <!-- Навбар с кнопкой Домой -->
                 <nav class="autodor-navbar navbar">
                     <div class="container d-flex justify-content-between align-items-center">
                         <span class="autodor-brand">🛣 Автодор</span>
                         <button class="btn btn-home" id="btn-home">🏠 Домой</button>
                     </div>
                 </nav>
-
                 <div class="product-hero">
                     <div class="container">
-                        <h1>🛣 ${this.data.title}</h1>
-                        <p style="color:rgba(255,255,255,0.7)">${this.data.subtitle}</p>
+                        <h1 id="product-title">Загрузка...</h1>
                     </div>
                 </div>
                 <div class="container" id="product-content"></div>
@@ -34,31 +28,28 @@ export class ProductPage {
         `;
     }
 
-    clickBack() {
-        const mainPage = new MainPage(this.parent);
-        mainPage.render();
-    }
-
     render() {
         this.parent.innerHTML = '';
         this.parent.insertAdjacentHTML('beforeend', this.getHTML());
 
-        // Кнопка Домой
         document.getElementById('btn-home').addEventListener('click', () => {
-            const mainPage = new MainPage(this.parent);
-            mainPage.render();
+            new MainPage(this.parent).render();
         });
 
         const content = document.getElementById('product-content');
 
         const backButton = new BackButtonComponent(content);
-        backButton.render(this.clickBack.bind(this));
+        backButton.render(() => new MainPage(this.parent).render());
 
-        const product = new ProductComponent(content);
-        product.render(this.data);
-
-        content.insertAdjacentHTML('beforeend',
-            `<p class="footer-note">© Баринов Егор Сергеевич, ИУ5-41Б — Лабораторная работа 3 + ДЗ</p>`
-        );
+        xhr_get_toll_road(this.toll_road_id, (toll_road) => {
+            document.getElementById('product-title').textContent = `🛣 ${toll_road.title}`;
+            const product = new ProductComponent(content);
+            product.render(toll_road);
+            content.insertAdjacentHTML('beforeend',
+                `<p class="footer-note">© Баринов Егор Сергеевич, ИУ5-41Б — Лабораторная работа 5</p>`
+            );
+        }, (err) => {
+            content.innerHTML = `<p class="text-danger mt-3">Ошибка загрузки: ${err}</p>`;
+        });
     }
 }
