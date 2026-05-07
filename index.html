@@ -20,12 +20,7 @@
             <h1>🛣 Автодор</h1>
             <span class="subtitle">3D инфраструктура платных дорог</span>
         </div>
-        <div class="upload-area">
-            <input type="file" id="upload-model" accept=".glb" hidden>
-            <button id="upload-btn" class="btn">+ Загрузить свою модель (.glb)</button>
-        </div>
     </header>
-
     <!-- Панель фильтрации и поиска -->
     <div class="filter-bar">
         <div class="filter-group">
@@ -40,19 +35,16 @@
                 <option value="Инфраструктура">🛣 Инфраструктура</option>
                 <option value="Оборудование">🚦 Оборудование</option>
                 <option value="Сооружение">🌉 Сооружение</option>
-                <option value="Пользовательская">👤 Пользовательские</option>
             </select>
         </div>
         <button id="reset-filters" class="btn reset-btn">Сбросить фильтры</button>
     </div>
-
     <main>
         <div class="gallery-grid" id="gallery-grid"></div>
     </main>
     <footer class="footer">
         <p>© Баринов Егор, ИУ5-41Б — 3D галерея объектов дорожной инфраструктуры</p>
     </footer>
-    <script src="idb.js" type="module"></script>
     <script src="app.js" type="module"></script>
 </body>
 </html>
