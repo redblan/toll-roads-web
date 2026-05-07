@@ -1,7 +1,7 @@
 // ─── Fetch-сервис для работы с API платных дорог (ЛР 6) ───
 // Заменяем XHR на fetch + промисы
 
-const TOLL_ROAD_API_URL = 'http://localhost:3000/routes';
+const TOLL_ROAD_API_URL = '/routes';
 
 // Получить список трасс с фильтрацией
 export async function fetch_get_toll_road_list(title_filter) {
