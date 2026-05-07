@@ -90,7 +90,7 @@ export class MainPage {
             await fetch_delete_toll_road(id);
             this.loadTollRoads(document.getElementById('toll_road_filter')?.value || '');
         } catch (err) {
-            alert('Ошибка удаления: ' + err.message);
+            console.error('Ошибка удаления:', err.message);
         }
     }
 
