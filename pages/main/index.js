@@ -88,7 +88,7 @@ export class MainPage {
         xhr_delete_toll_road(id, () => {
             this.loadTollRoads(document.getElementById('toll_road_filter')?.value || '');
         }, (err) => {
-            alert('Ошибка удаления: ' + err);
+            console.error('Ошибка удаления:', err);
         });
     }
 
