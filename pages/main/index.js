@@ -31,8 +31,9 @@ export class MainPage {
                             type="text"
                             id="toll_road_filter"
                             class="toll-filter-input"
-                            placeholder="🔍 Поиск по названию трассы..."
+                            placeholder="Поиск по названию трассы..."
                         >
+                        <button class="btn btn-search" id="btn-search">🔍 Найти</button>
                         <button class="btn btn-add-route" id="btn-add-route">+ Добавить</button>
                     </div>
 
@@ -76,13 +77,11 @@ export class MainPage {
     }
 
     clickCard(id) {
-        const productPage = new ProductPage(this.parent, id);
-        productPage.render();
+        new ProductPage(this.parent, id).render();
     }
 
     editRoute(id) {
-        const editPage = new EditPage(this.parent, id);
-        editPage.render();
+        new EditPage(this.parent, id).render();
     }
 
     deleteRoute(id) {
@@ -102,13 +101,20 @@ export class MainPage {
         });
 
         document.getElementById('btn-add-route').addEventListener('click', () => {
-            const editPage = new EditPage(this.parent, null);
-            editPage.render();
+            new EditPage(this.parent, null).render();
         });
 
-        // Фильтрация через XHR при вводе
-        document.getElementById('toll_road_filter').addEventListener('input', (e) => {
-            this.loadTollRoads(e.target.value);
+        // Поиск по кнопке
+        document.getElementById('btn-search').addEventListener('click', () => {
+            const filter = document.getElementById('toll_road_filter').value;
+            this.loadTollRoads(filter);
+        });
+
+        // Поиск по Enter
+        document.getElementById('toll_road_filter').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                this.loadTollRoads(e.target.value);
+            }
         });
 
         this.loadTollRoads();
