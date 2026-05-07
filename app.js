@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { initDB, saveModel, getAllModels } from './idb.js';
 
 const PRESET_MODELS = [
     { name: 'Легковой автомобиль', url: './models/car.glb', id: 'preset-car', category: 'Транспорт', isPreset: true },
@@ -33,7 +32,7 @@ function generatePreviewFromUrl(url) {
         const backLight = new THREE.DirectionalLight(0x8866ff, 0.5);
         backLight.position.set(-1, 1, -1);
         scene.add(backLight);
-        
+
         const loader = new GLTFLoader();
         loader.load(url, (gltf) => {
             const model = gltf.scene;
@@ -51,33 +50,12 @@ function generatePreviewFromUrl(url) {
     });
 }
 
-async function generatePreviewFromBlob(blob) {
-    const url = URL.createObjectURL(blob);
-    const preview = await generatePreviewFromUrl(url);
-    URL.revokeObjectURL(url);
-    return preview;
-}
-
 async function loadPresetModels() {
     for (const preset of PRESET_MODELS) {
         const preview = await generatePreviewFromUrl(preset.url);
         allModels.push({
             ...preset,
             preview: preview
-        });
-    }
-}
-
-async function loadUserModels() {
-    const userModels = await getAllModels();
-    for (const model of userModels) {
-        allModels.push({
-            id: model.id,
-            name: model.name,
-            blob: model.file,
-            preview: model.preview,
-            isPreset: false,
-            category: 'Пользовательская'
         });
     }
 }
@@ -90,15 +68,10 @@ function renderGallery() {
         const card = document.createElement('div');
         card.className = 'card';
         card.addEventListener('click', () => {
-            let urlParam = '';
-            if (model.isPreset) {
-                urlParam = `?type=preset&id=${encodeURIComponent(model.id)}&url=${encodeURIComponent(model.url)}&name=${encodeURIComponent(model.name)}`;
-            } else {
-                urlParam = `?type=user&id=${model.id}&name=${encodeURIComponent(model.name)}`;
-            }
+            const urlParam = `?type=preset&id=${encodeURIComponent(model.id)}&url=${encodeURIComponent(model.url)}&name=${encodeURIComponent(model.name)}`;
             window.location.href = `detail.html${urlParam}`;
         });
-        
+
         const canvas = document.createElement('canvas');
         canvas.width = 400;
         canvas.height = 300;
@@ -119,7 +92,7 @@ function renderGallery() {
             ctx.fillText('Нет превью', 20, 100);
         }
         card.appendChild(canvas);
-        
+
         const info = document.createElement('div');
         info.className = 'card-info';
         info.innerHTML = `
@@ -134,7 +107,7 @@ function renderGallery() {
 function applyFilters() {
     const searchText = document.getElementById('search-input').value.toLowerCase();
     const category = document.getElementById('category-select').value;
-    
+
     filteredModels = allModels.filter(model => {
         const matchesSearch = model.name.toLowerCase().includes(searchText);
         const matchesCategory = (category === 'all') || (model.category === category);
@@ -149,51 +122,20 @@ function resetFilters() {
     applyFilters();
 }
 
-async function onFileUpload(file) {
-    if (!file.name.endsWith('.glb')) {
-        alert('Пожалуйста, загрузите файл в формате .glb');
-        return;
-    }
-    const preview = await generatePreviewFromBlob(file);
-    if (preview) {
-        const id = await saveModel(file, preview, file.name.replace('.glb', ''));
-        const newModel = {
-            id: id,
-            name: file.name.replace('.glb', ''),
-            blob: file,
-            preview: preview,
-            isPreset: false,
-            category: 'Пользовательская'
-        };
-        allModels.push(newModel);
-        applyFilters();
-    } else {
-        alert('Не удалось создать превью для этой модели');
-    }
-}
-
 async function init() {
-    await initDB();
     await loadPresetModels();
-    await loadUserModels();
-    
     applyFilters();
-    
-    document.getElementById('search-input').addEventListener('input', applyFilters);
+
+    // Поиск по кнопке
+    document.getElementById('btn-search').addEventListener('click', applyFilters);
+
+    // Поиск по Enter
+    document.getElementById('search-input').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') applyFilters();
+    });
+
     document.getElementById('category-select').addEventListener('change', applyFilters);
     document.getElementById('reset-filters').addEventListener('click', resetFilters);
-    
-    const uploadBtn = document.getElementById('upload-btn');
-    const fileInput = document.getElementById('upload-model');
-    if (uploadBtn && fileInput) {
-        uploadBtn.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length) {
-                onFileUpload(e.target.files[0]);
-            }
-            fileInput.value = '';
-        });
-    }
 }
 
 init();
