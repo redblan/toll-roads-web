@@ -129,7 +129,8 @@ window.onload = function() {
                 break;
             case '/':
                 if (numB === 0) {
-                    alert('Деление на ноль!');
+                    console.error('Ошибка: деление на ноль');
+                    updateDisplay('Err:0');
                     return;
                 }
                 result = numA / numB;
@@ -163,7 +164,8 @@ window.onload = function() {
         if (current !== '') {
             let num = parseFloat(current);
             if (num < 0) {
-                alert('Корень из отрицательного числа');
+                console.error('Ошибка: корень из отрицательного числа');
+                updateDisplay('Err:√');
                 return;
             }
             let result = Math.sqrt(num).toString();
@@ -195,7 +197,8 @@ window.onload = function() {
         if (current !== '') {
             let num = parseInt(parseFloat(current));
             if (num < 0) {
-                alert('Факториал отрицательного числа не определён');
+                console.error('Ошибка: факториал отрицательного числа не определён');
+                updateDisplay('Err:!');
                 return;
             }
             let result = 1;
@@ -259,7 +262,7 @@ window.onload = function() {
         resultElement.style.backgroundColor = displayColors[displayColorIndex];
     };
 
-    // ===== ИНДИВИДУАЛЬНАЯ ФУНКЦИЯ: расчёт стоимости проезда =====
+    // ===== ИНДИВИДУАЛЬНАЯ ФУНКЦИЯ: расчёт стоимости проезда (toll_roads) =====
     const tollPanel = document.getElementById("toll_roads_panel");
     const tollRateSelect = document.getElementById("toll_rate_select");
     const tollCustomRow = document.getElementById("toll_custom_row");
@@ -284,6 +287,7 @@ window.onload = function() {
         const kmInput = document.getElementById("toll_km_input");
         const km = parseFloat(kmInput.value);
         if (isNaN(km) || km <= 0) {
+            console.error('Ошибка: некорректное расстояние', km);
             tollResultDiv.innerHTML = '⚠️ Введите корректное расстояние';
             tollResultDiv.className = 'toll-result toll-error';
             return;
@@ -293,6 +297,7 @@ window.onload = function() {
         if (tollRateSelect.value === 'custom') {
             const customRate = parseFloat(document.getElementById("toll_custom_rate").value);
             if (isNaN(customRate) || customRate <= 0) {
+                console.error('Ошибка: некорректный тариф', customRate);
                 tollResultDiv.innerHTML = '⚠️ Введите корректный тариф';
                 tollResultDiv.className = 'toll-result toll-error';
                 return;
@@ -304,12 +309,13 @@ window.onload = function() {
             roadName = tollRateSelect.options[tollRateSelect.selectedIndex].text.split('—')[0].trim();
         }
 
-        const cost = km * rate;
-        tollResultDiv.innerHTML = `🛣 <strong>${roadName}</strong><br>📏 Расстояние: <strong>${km} км</strong><br>💰 Тариф: <strong>${rate} ₽/км</strong><br>✅ Стоимость проезда: <strong>${cost.toFixed(2)} ₽</strong>`;
+        const toll_roads_cost = km * rate;
+        console.log('toll_roads_cost:', toll_roads_cost, '₽ (', km, 'км ×', rate, '₽/км)');
+
+        tollResultDiv.innerHTML = `🛣 <strong>${roadName}</strong><br>📏 Расстояние: <strong>${km} км</strong><br>💰 Тариф: <strong>${rate} ₽/км</strong><br>✅ Стоимость проезда: <strong>${toll_roads_cost.toFixed(2)} ₽</strong>`;
         tollResultDiv.className = 'toll-result toll-success';
 
-        // Переносим результат на дисплей калькулятора
-        a = cost.toFixed(2);
+        a = toll_roads_cost.toFixed(2);
         b = '';
         selectedOperation = null;
         updateDisplay(a);
