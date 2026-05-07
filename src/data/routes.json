@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "title": "М11 «Нева»",
+    "subtitle": "Москва — Санкт-Петербург",
+    "distance_km": 684,
+    "rate_per_km": 4.5,
+    "speed_limit": "110–130 км/ч",
+    "opened_year": 2019,
+    "text": "Скоростная магистраль, соединяющая две столицы."
+  },
+  {
+    "id": 2,
+    "title": "М4 «Дон»",
+    "subtitle": "Москва — Новороссийск",
+    "distance_km": 1540,
+    "rate_per_km": 5.2,
+    "speed_limit": "90–130 км/ч",
+    "opened_year": 2015,
+    "text": "Главная южная артерия России."
+  },
+  {
+    "id": 3,
+    "title": "ЦКАД",
+    "subtitle": "Центральная кольцевая автодорога",
+    "distance_km": 336,
+    "rate_per_km": 6.1,
+    "speed_limit": "110 км/ч",
+    "opened_year": 2021,
+    "text": "Кольцевая дорога вокруг Москвы."
+  },
+  {
+    "id": 4,
+    "title": "М12 «Восток»",
+    "subtitle": "Москва — Казань",
+    "distance_km": 811,
+    "rate_per_km": 5.5,
+    "speed_limit": "130 км/ч",
+    "opened_year": 2023,
+    "text": "Новейшая скоростная трасса России."
+  },
+  {
+    "id": 5,
+    "title": "ЗСД",
+    "subtitle": "Западный скоростной диаметр (СПб)",
+    "distance_km": 47,
+    "rate_per_km": 7.8,
+    "speed_limit": "110 км/ч",
+    "opened_year": 2016,
+    "text": "Платная магистраль в Санкт-Петербурге."
+  },
+  {
+    "id": 6,
+    "title": "М3 «Украина»",
+    "subtitle": "Москва — Брянск",
+    "distance_km": 452,
+    "rate_per_km": 3.8,
+    "speed_limit": "90–110 км/ч",
+    "opened_year": 2011,
+    "text": "Платные участки в Московской и Калужской областях."
+  },
+  {
+    "id": 7,
+    "title": "N1",
+    "subtitle": "СП-Парус",
+    "distance_km": 90,
+    "rate_per_km": 6,
+    "speed_limit": "210–240 км/ч",
+    "opened_year": 2026,
+    "text": "крутая"
+  }
+]

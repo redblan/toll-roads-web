@@ -6,18 +6,23 @@
     <title>Автодор — Платные дороги России</title>
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/examples/jsm/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
 </head>
 <body>
-
 <nav class="navbar navbar-expand-lg autodor-navbar">
     <div class="container">
         <a class="navbar-brand autodor-brand" href="#">🛣 Автодор</a>
         <span class="navbar-text text-white opacity-75">Государственная компания</span>
     </div>
 </nav>
-
 <div id="root"></div>
-
 <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="main.js" type="module"></script>
 </body>
