@@ -93,6 +93,7 @@ export class MainPage {
             console.error('Ошибка удаления:', err.message);
         }
     }
+    
 
     render() {
         this.parent.innerHTML = '';
